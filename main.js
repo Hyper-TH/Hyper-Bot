@@ -43,14 +43,14 @@ var today_dd = String(today.getDate()).padStart(2, '0');
 var today_mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
 var today_yyyy = today.getFullYear();
 
-today = today_mm + '-' + today_dd + '-' + today_yyyy;
-console.log('Today\'s Date: ', today);
+var today = new Date(today_mm + '-' + today_dd + '-' + today_yyyy);
+console.log(`Today\'s Date: ${today}`);
 
 client.on("ready", () => {
-    console.log(`Logged in as ${client.user.tag}!`)
+    console.log(`Logged in as ${client.user.tag}`)
 
     // test guild 
-    const guildId = '932730439452471296'
+    const guildId = process.env.TEST_GUILD // store test server id in env file
     const guild = client.guilds.cache.get(guildId)
     let commands 
 
@@ -171,9 +171,8 @@ client.on("messageCreate", async (msg) => {
             if (args.length === 0) return msg.reply('Please provide the numbers to be added');
 
             try {
-                var sum = parseInt(args[0]) + parseInt(args[1]);
-                var output = 'Sum of input numbers: ' + sum;
-
+                const sum = parseInt(args[0]) + parseInt(args[1]);
+                const output = 'Sum of input numbers: ' + sum;
                 console.log(output);
                 msg.reply(output);
             } catch (err) {
@@ -185,32 +184,27 @@ client.on("messageCreate", async (msg) => {
         } else if (CMD_NAME === 'day?') {
             
             // Get user date and store into array
-            var userDateRaw = args[0].split('/');
+            const userDateRaw = args[0].split('/');
 
             // Get amount of years to be added
-            var years = parseInt(args[1]);
+            const years = parseInt(args[1]);
 
             // Get user's date
             // Date.parse() is an alternate option to convert the string date. 
             // It returns a numeric value instead of a date object. 
             // Hence it will require further processing if you expect a date object.
-            var miliseconds = new Date();
             // MM/DD/YYYY (also change from / to -, for some reason it goes one day back with /)
-            var miliseconds = Date.parse(userDateRaw[0] + '-' + userDateRaw[1] +  '-' + userDateRaw[2]); 
-            userDate = new Date(miliseconds);
+            const miliseconds = Date.parse(userDateRaw[0] + '-' + userDateRaw[1] +  '-' + userDateRaw[2]); 
+            var userDate = new Date(miliseconds);
             console.log(userDate); // for some reason displays a day before
 
             // Declare day month and years
-            var day = new Date();
-            var month = new Date();
-            var year = new Date();
-
             // getDay returns day of week (i.e., Sunday = 0)
             // getDate returns the day of date
-            date = userDate.getDate();
-            day = userDate.getDay();
-            month = userDate.getMonth() + 1; // January at 0
-            year = userDate.getFullYear();
+            const date = userDate.getDate();
+            var day = userDate.getDay();
+            const month = userDate.getMonth() + 1; // January at 0
+            const year = userDate.getFullYear();
 
             // Output details of birthday
             console.log('Day of your birthday: ', date);
@@ -227,16 +221,16 @@ client.on("messageCreate", async (msg) => {
             nextYearMiliseconds = Date.parse(userDateRaw[0] + '-' + userDateRaw[1] +  '-' + (today_yyyy + years)); // Get milliseconds of next year
 
             // Get the 1 year miliseconds difference
-            miliDifference = nextYearMiliseconds - thisYearMiliseconds 
+            const miliDifference = nextYearMiliseconds - thisYearMiliseconds 
 
             // Add it to current year
-            newMiliseconds = thisYearMiliseconds + miliDifference
+            const newMiliseconds = thisYearMiliseconds + miliDifference
 
             // Convert to date
-            var result = new Date(newMiliseconds);
+            const result = new Date(newMiliseconds);
 
             day = result.getDay();
-            var output = 'Your birthday will be on a ' + daysArr[day];
+            const output = `Your birthday will be on a ${daysArr[day]} after ${years} year(s)`;
 
             console.log(output);
             msg.reply(output);   

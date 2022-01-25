@@ -2,7 +2,13 @@ import DiscordJS, { Intents } from 'discord.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
-// require('dotenv').config();
+// First parameter is id while second is token
+const webhookData = {
+    id: process.env.WEBHOOK_ID,
+    token: process.env.WEBHOOK_TOKEN
+}
+const webhook = new DiscordJS.WebhookClient(webhookData);
+webhook.send('Hyper was here!')
 
 // const { Client, Intents, Message, Channel } = require('discord.js');
 const client = new DiscordJS.Client({ 
@@ -12,8 +18,8 @@ const client = new DiscordJS.Client({
     ] , 
     partials: ['MESSAGE', 'REACTION']
 }); 
-const PREFIX = "!h "; // add space
 
+const PREFIX = "!h "; // add space
 
 Date.prototype.addDays = function (days) {
     let date = new Date(this.valueOf());
@@ -50,7 +56,7 @@ client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`)
 
     // test guild 
-    const guildId = process.env.TEST_GUILD // store test server id in env file
+    const guildId = process.env.TEST_GUILD 
     const guild = client.guilds.cache.get(guildId)
     let commands 
 

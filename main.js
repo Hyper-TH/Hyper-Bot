@@ -1,4 +1,4 @@
-import DiscordJS, { Intents } from 'discord.js'
+import DiscordJS, { Intents, Permissions } from 'discord.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -56,12 +56,12 @@ client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`)
 
     // test guild 
-    const guildId = process.env.TEST_GUILD 
-    const guild = client.guilds.cache.get(guildId)
+    const testGuildId = process.env.TEST_GUILD 
+    const testGuild = client.guilds.cache.get(testGuildId)
     let commands 
 
-    if (guild) {
-        commands = guild.commands
+    if (testGuild) {
+        commands = testGuild.commands
     } else {
         commands = client.application?.commands
     }
@@ -138,28 +138,46 @@ client.on("messageCreate", async (msg) => {
         console.log(`Command name used: ${CMD_NAME}`); // For some reason, CMD_NAME becomes an arg
         console.log(`Arguments passed : ${args}`);
 
-        if (CMD_NAME === 'kick') {
+        if (CMD_NAME === 'help') {
+            msg.channel.send(`
+                List of available commands: \n
+                kick <user_id> \n
+                ban <user_id> \n
+                sum <1st number> <2nd number> \n
+                day? <MM/DD/YYYY> <number of years from current year> \n
+                random
+            `);
+        } else if (CMD_NAME === 'kick') {
             
-            if (!msg.member.hasPermissions('KICK_MEMBERS'))
+            if (!msg.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
                 return msg.reply('You do not have permissions to use that command');
             if (args.length === 0) 
                 return msg.reply('Please provide an ID');
             
-            const member = msg.guild.members.cache.get(args[0]);
-            if (member) {
-                member
-                    .kick()
-                    .then((member) => msg.channel.send(`${member} was kicked.`))
-                    .catch((err) => msg.channel.send('I do not have permissions to kick that user:('));
-            } else {
-                msg.channel.send('Member not found');
-            }
-            msg.channel.send('Kicked the user');
+            // const member = msg.guild.members.cache.get(args[0]);
+            try {
+                const user = await msg.guild.members.kick(args[0]);
+                msg.channel.send('User was kicked successfully');
+                console.log(user);
+            } catch (err) {
+                console.log(err);
+                msg.channel.send('An error occured. Either I do not have permissions or the user was not found')
+            } // end try catch
+
+            // if (member) {
+            //     member
+            //         .kick()
+            //         .then((member) => msg.channel.send(`${member} was kicked.`))
+            //         .catch((err) => msg.channel.send('I do not have permissions to kick that user:('));
+            //     console.log(`${member} was kicked.`)
+            // } else {
+            //     msg.channel.send('Member not found');
+            // }
         
         // end  kick
 
         } else if (CMD_NAME === 'ban') {
-            if (!msg.member.hasPermissions('BAN_MEMBERS'))
+            if (!msg.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS))
                 return msg.reply('You do not have permissions to use that command');
             if (args.length === 0) return msg.reply('Please provide an ID');
         
@@ -242,6 +260,10 @@ client.on("messageCreate", async (msg) => {
             msg.reply(output);   
 
         // end day?
+        } else if (CMD_NAME == 'random') {
+            let x = Math.floor((Math.random() * 100) + 1);
+            msg.channel.send(`Random number generated: ${x}`);
+
         }
     } // end prefix
 

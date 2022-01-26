@@ -1,4 +1,9 @@
-import DiscordJS, { Intents, Permissions } from 'discord.js'
+import DiscordJS, { 
+    Intents, 
+    Permissions,
+    MessageEmbed
+} from 'discord.js'
+
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -20,6 +25,47 @@ const client = new DiscordJS.Client({
 }); 
 
 const PREFIX = "!h "; // add space
+
+// Embeded example
+const exampleEmbed = new MessageEmbed()
+	.setColor('#0099ff')
+	.setTitle('Some title')
+	.setURL('https://discord.js.org/')
+	.setAuthor({ name: 'Some name', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+	.setDescription('Some description here')
+	.setThumbnail('https://i.imgur.com/AfFp7pu.png')
+	.addFields(
+		{ name: 'Regular field title', value: 'Some value here' },
+		{ name: '\u200B', value: '\u200B' },
+		{ name: 'Inline field title', value: 'Some value here', inline: true },
+		{ name: 'Inline field title', value: 'Some value here', inline: true },
+	)
+	.addField('Inline field title', 'Some value here', true)
+	.setImage('https://i.imgur.com/AfFp7pu.png')
+	.setTimestamp()
+	.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+
+// Help embedded
+const helpEmbed = new MessageEmbed()
+    .setColor('#0099ff')
+    .setTitle('Help commands for Hyper Bot')
+    // .setURL('https://discord.js.org/')
+    .setAuthor({ name: 'Hyper Bot', iconURL: 'https://imgur.com/a/uwn3BxM', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }) // Add hyper logo to sources
+    .setDescription('A simple but messy bot created by a clueless student')
+    .setThumbnail('https://imgur.com/a/uwn3BxM')
+    .addFields(
+        { name: 'Prefix', value: '`!h`' },
+        { name: 'Send help', value: '`!h help`' },
+        { name: 'Kick a member', value: '`!h kick <user_id>` *Yeet a member*' },
+        { name: 'Ban a member', value: '`!h ban <user_id>` ***Yeet a member harder***' },
+        { name: 'Which day of the week is your birthday', value: '`!h day? <MM/DD/YYYY> <# of years from now>` Find out which day of the week is your birthday in x years' },
+        { name: 'Find sum of two numbers', value: '`!h sum <num1> <num2>` ' },
+        { name: 'Gay rate', value: '`!h gay` Find out how gay you are' },
+        { name: '\u200B', value: '\u200B' }, // space
+    )
+    .setTimestamp()
+    .setFooter({ text: 'Ur mom', iconURL: 'https://imgur.com/a/uwn3BxM' });
+
 
 Date.prototype.addDays = function (days) {
     let date = new Date(this.valueOf());
@@ -139,14 +185,7 @@ client.on("messageCreate", async (msg) => {
         console.log(`Arguments passed : ${args}`);
 
         if (CMD_NAME === 'help') {
-            msg.channel.send(`
-                List of available commands: \n
-                kick <user_id> \n
-                ban <user_id> \n
-                sum <1st number> <2nd number> \n
-                day? <MM/DD/YYYY> <number of years from current year> \n
-                random
-            `);
+            msg.channel.send({ embeds: [helpEmbed] });
         } else if (CMD_NAME === 'kick') {
             
             if (!msg.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
@@ -260,10 +299,12 @@ client.on("messageCreate", async (msg) => {
             msg.reply(output);   
 
         // end day?
-        } else if (CMD_NAME == 'random') {
+        } else if (CMD_NAME === 'random') {
             let x = Math.floor((Math.random() * 100) + 1);
             msg.channel.send(`Random number generated: ${x}`);
 
+        } else if (CMD_NAME === 'embed') {
+            msg.channel.send({ embeds: [helpEmbed] });
         }
     } // end prefix
 

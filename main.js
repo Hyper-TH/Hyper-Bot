@@ -1,7 +1,8 @@
 import DiscordJS, { 
     Intents, 
     Permissions,
-    MessageEmbed
+    MessageEmbed,
+    MessageAttachment
 } from 'discord.js'
 
 import dotenv from 'dotenv'
@@ -15,7 +16,6 @@ const webhookData = {
 const webhook = new DiscordJS.WebhookClient(webhookData);
 webhook.send('Hyper was here!')
 
-// const { Client, Intents, Message, Channel } = require('discord.js');
 const client = new DiscordJS.Client({ 
     intents: [
         Intents.FLAGS.GUILDS, 
@@ -46,13 +46,14 @@ const exampleEmbed = new MessageEmbed()
 	.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
 
 // Help embedded
+const hyper_png = new MessageAttachment('assets/hyper.png');
 const helpEmbed = new MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Help commands for Hyper Bot')
     // .setURL('https://discord.js.org/')
-    .setAuthor({ name: 'Hyper Bot', iconURL: 'https://imgur.com/a/uwn3BxM', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }) // Add hyper logo to sources
+    .setAuthor({ name: 'Hyper Bot', iconURL: 'attachment://hyper.png', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }) // Add hyper logo to sources
     .setDescription('A simple but messy bot created by a clueless student')
-    .setThumbnail('https://imgur.com/a/uwn3BxM')
+    .setThumbnail('attachment://hyper.png')
     .addFields(
         { name: 'Prefix', value: '`!h`' },
         { name: 'Send help', value: '`!h help`' },
@@ -64,7 +65,7 @@ const helpEmbed = new MessageEmbed()
         { name: '\u200B', value: '\u200B' }, // space
     )
     .setTimestamp()
-    .setFooter({ text: 'Ur mom', iconURL: 'https://imgur.com/a/uwn3BxM' });
+    .setFooter({ text: 'Ur mom', setImage: 'attachment://hyper.png' });
 
 
 Date.prototype.addDays = function (days) {
@@ -185,7 +186,7 @@ client.on("messageCreate", async (msg) => {
         console.log(`Arguments passed : ${args}`);
 
         if (CMD_NAME === 'help') {
-            msg.channel.send({ embeds: [helpEmbed] });
+            msg.channel.send({ embeds: [helpEmbed], files: [hyper_png] });
         } else if (CMD_NAME === 'kick') {
             
             if (!msg.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
@@ -302,10 +303,7 @@ client.on("messageCreate", async (msg) => {
         } else if (CMD_NAME === 'random') {
             let x = Math.floor((Math.random() * 100) + 1);
             msg.channel.send(`Random number generated: ${x}`);
-
-        } else if (CMD_NAME === 'embed') {
-            msg.channel.send({ embeds: [helpEmbed] });
-        }
+        } 
     } // end prefix
 
 }); // end message

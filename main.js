@@ -2,11 +2,42 @@ import DiscordJS, {
     Intents, 
     Permissions,
     MessageEmbed,
-    MessageAttachment
+    MessageAttachment,
+    MessageMentions 
 } from 'discord.js'
 
 import dotenv from 'dotenv'
 dotenv.config()
+
+// Regex
+function getUserFromMention(mention) {
+	// The id is the first and only match found by the RegEx.
+	const matches = mention.match(USERS_PATTERN);
+
+	// If supplied variable was not a mention, matches will be null instead of an array.
+	if (!matches) return;
+
+	// The first element in the matches array will be the entire mention, not just the ID,
+	// so use index 1.
+	const id = matches[1];
+
+	return client.users.cache.get(id);
+}
+
+// // Get userid from mention
+// function getUserFromMention(mention) {
+// 	if (!mention) return;
+
+// 	if (mention.startsWith('<@') && mention.endsWith('>')) {
+// 		mention = mention.slice(2, -1);
+
+// 		if (mention.startsWith('!')) {
+// 			mention = mention.slice(1);
+// 		}
+
+// 		return client.users.cache.get(mention);
+// 	}
+// }
 
 // First parameter is id while second is token
 const webhookData = {
@@ -89,6 +120,7 @@ const daysArr = {
     5 : 'Friday',
     6 : 'Saturday'
 };
+
 
 // Get today's date
 var today = new Date();
@@ -300,9 +332,18 @@ client.on("messageCreate", async (msg) => {
             msg.reply(output);   
 
         // end day?
-        } else if (CMD_NAME === 'random') {
+        } else if (CMD_NAME === 'gay') {
             let x = Math.floor((Math.random() * 100) + 1);
-            msg.channel.send(`Random number generated: ${x}`);
+            console.log(`Random number generated: ${x}`);
+
+            if (args === 0){
+                return msg.channel.send(`${msg.author.toString()} you are ${x}% gay`)
+            }
+            else { 
+                // Let first arg be the user
+                const member = await msg.members.mentions.first();
+                return msg.channel.send(`${member} you are ${x}% gay`)
+            }
         } 
     } // end prefix
 

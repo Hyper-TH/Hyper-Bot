@@ -2,42 +2,41 @@ import DiscordJS, {
     Intents, 
     Permissions,
     MessageEmbed,
-    MessageAttachment,
-    MessageMentions 
+    MessageAttachment
 } from 'discord.js'
 
 import dotenv from 'dotenv'
 dotenv.config()
 
-// Regex
-function getUserFromMention(mention) {
-	// The id is the first and only match found by the RegEx.
-	const matches = mention.match(USERS_PATTERN);
-
-	// If supplied variable was not a mention, matches will be null instead of an array.
-	if (!matches) return;
-
-	// The first element in the matches array will be the entire mention, not just the ID,
-	// so use index 1.
-	const id = matches[1];
-
-	return client.users.cache.get(id);
-}
-
-// // Get userid from mention
+// // Regex
 // function getUserFromMention(mention) {
-// 	if (!mention) return;
+// 	// The id is the first and only match found by the RegEx.
+// 	const matches = mention.match(USERS_PATTERN);
 
-// 	if (mention.startsWith('<@') && mention.endsWith('>')) {
-// 		mention = mention.slice(2, -1);
+// 	// If supplied variable was not a mention, matches will be null instead of an array.
+// 	if (!matches) return;
 
-// 		if (mention.startsWith('!')) {
-// 			mention = mention.slice(1);
-// 		}
+// 	// The first element in the matches array will be the entire mention, not just the ID,
+// 	// so use index 1.
+// 	const id = matches[1];
 
-// 		return client.users.cache.get(mention);
-// 	}
+// 	return client.users.cache.get(id);
 // }
+
+// Get userid from mention
+function getUserFromMention(mention) {
+	if (!mention) return;
+
+	if (mention.startsWith('<@') && mention.endsWith('>')) {
+		mention = mention.slice(2, -1);
+
+		if (mention.startsWith('!')) {
+			mention = mention.slice(1);
+		}
+
+		return client.users.cache.get(mention);
+	}
+}
 
 // First parameter is id while second is token
 const webhookData = {
@@ -340,13 +339,18 @@ client.on("messageCreate", async (msg) => {
                 return msg.channel.send(`${msg.author.toString()} you are ${x}% gay`)
             }
             else { 
-                // Let first arg be the user
-                const member = await msg.members.mentions.first();
-                return msg.channel.send(`${member} you are ${x}% gay`)
+                
+                let mentioned = getUserFromMention(args[0]);
+                return msg.channel.send(`${mentioned} you are ${x}% gay`)
             }
         } 
     } // end prefix
 
+    if (msg.content === 'no u') {
+        return msg.reply('No u');
+    } else if (msg.content === 'Ur mom') {
+        return msg.reply('Ur mom');
+    }
 }); // end message
 
 client.on('messageReactionAdd', (reaction, user) => {

@@ -23,7 +23,7 @@ dotenv.config()
 // 	return client.users.cache.get(id);
 // }
 
-// Get userid from mention
+// Get userid from mention (parsing)
 function getUserFromMention(mention) {
 	if (!mention) return;
 
@@ -335,7 +335,7 @@ client.on("messageCreate", async (msg) => {
             let x = Math.floor((Math.random() * 100) + 1);
             console.log(`Random number generated: ${x}`);
 
-            if (args === 0){
+            if (args.length === 0){
                 return msg.channel.send(`${msg.author.toString()} you are ${x}% gay`)
             }
             else { 

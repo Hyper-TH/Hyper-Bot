@@ -24,19 +24,20 @@ dotenv.config()
 // }
 
 // Get userid from mention (parsing)
-function getUserFromMention(mention) {
-	if (!mention) return;
+// function getUserFromMention(mention) {
+// 	if (!mention) return;
 
-	if (mention.startsWith('<@') && mention.endsWith('>')) {
-		mention = mention.slice(2, -1);
+// 	if (mention.startsWith('<@') && mention.endsWith('>')) {
+// 		mention = mention.slice(2, -1);
 
-		if (mention.startsWith('!')) {
-			mention = mention.slice(1);
-		}
+// 		if (mention.startsWith('!')) {
+// 			mention = mention.slice(1);
+// 		}
 
-		return client.users.cache.get(mention);
-	}
-}
+// 		return client.users.cache.get(mention);
+// 	}
+// }
+
 
 // First parameter is id while second is token
 const webhookData = {
@@ -90,7 +91,7 @@ const helpEmbed = new MessageEmbed()
     .setTitle('Help commands for Hyper Bot')
     // .setURL('https://discord.js.org/')
     .setAuthor({ name: 'Hyper Bot', iconURL: 'attachment://hyper.png', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }) // Add hyper logo to sources
-    .setDescription('A simple but messy bot created by a clueless student')
+    .setDescription('A simple but messy bot created by a clueless Computer Science student')
     .setThumbnail('attachment://hyper.png')
     .addFields(
         { name: 'Prefix', value: '`!!h`' },
@@ -348,7 +349,8 @@ client.on("messageCreate", async (msg) => {
             }
             else { 
                 
-                let mentioned = getUserFromMention(args[0]);
+                // let mentioned = getUserFromMention(args[0]);
+                let mentioned = args[0];
                 return msg.channel.send(`${mentioned} you are ${x}% gay`)
             }
         } 
@@ -358,6 +360,20 @@ client.on("messageCreate", async (msg) => {
         return msg.reply('No u');
     } else if (msg.content === 'Ur mom') {
         return msg.reply('Ur mom');
+    }
+    
+    if (msg.author.id === process.env.DISBOARD_ID) {
+    
+        let foundText = false;
+
+        if (msg.embeds[0].description.includes("Please wait")) {
+
+            const embedString = msg.embeds[0].description.split(' ');
+            let mentioned = embedString[0];
+            
+            msg.channel.send(`Bump Unsuccessful ${mentioned}`);
+            foundText = true;
+        }
     }
 
     // // check to ensure message was sent by bot and contains embed

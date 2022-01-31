@@ -364,41 +364,24 @@ client.on("messageCreate", async (msg) => {
     
     if (msg.author.id === process.env.DISBOARD_ID) {
     
-        let foundText = false;
-
         if (msg.embeds[0].description.includes("Please wait")) {
 
             const embedString = msg.embeds[0].description.split(' ');
             let mentioned = embedString[0];
             
             msg.channel.send(`Bump Unsuccessful ${mentioned}`);
-            foundText = true;
+
+        } else if (msg.embeds[0].description.includes("Bump done!")) {
+            
+            const embedString = msg.embeds[0].description.split(' ');
+            let mentioned = embedString[0];
+            
+            msg.channel.send(`Bump successfully ${mentioned}`);
+            
+        } else {
+            msg.channel.send(`I'm not habla, I can only speak english`);
         }
     }
-
-    // // check to ensure message was sent by bot and contains embed
-    // // if (!msg.author.bot || !msg.embeds[0]) return;
-    // if (msg.author.bot || msg.embeds[0]) {
-
-    //     const receivedEmbed = msg.embeds[0];
-    //     // const exampleEmbed = new MessageEmbed(receivedEmbed).setTitle('New title');
-
-    //     // send in same channel
-    //     //msg.channel.send(exampleEmbed);
-    //     console.log("Sending example embed..");
-    //     msg.channel.send({ embeds: [exampleEmbed] });
-
-    //     // send in different channel
-    //     // client.channels.fetch(process.env.TEST_CHANNEL).then(channel => {
-    //     //    msg.channel.send(exampleEmbed);
-    //     // });
-    //     // alternatively, you can use this (but the function must be asynchronous)
-    //     // const channel = await client.channels.fetch(process.env.TEST_CHANNEL);
-    //     // msg.channel.send(exampleEmbed);
-
-    //     return
-    // }
-
 }); // end message
 
 client.on('messageReactionAdd', (reaction, user) => {

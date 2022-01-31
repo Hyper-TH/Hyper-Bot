@@ -47,6 +47,14 @@ const webhook = new DiscordJS.WebhookClient(webhookData);
 webhook.send('Hyper was here!')
 
 const client = new DiscordJS.Client({ 
+    presence: {
+        status: 'online',
+        afk: false,
+        activities: [{
+            name: 'with ur mom',
+            type: 'PLAYING'
+        }],
+    },
     intents: [
         Intents.FLAGS.GUILDS, 
         Intents.FLAGS.GUILD_MESSAGES
@@ -54,7 +62,7 @@ const client = new DiscordJS.Client({
     partials: ['MESSAGE', 'REACTION']
 }); 
 
-const PREFIX = "!h "; // add space
+const PREFIX = "!!h "; // add space
 
 // Embeded example
 const exampleEmbed = new MessageEmbed()
@@ -85,13 +93,13 @@ const helpEmbed = new MessageEmbed()
     .setDescription('A simple but messy bot created by a clueless student')
     .setThumbnail('attachment://hyper.png')
     .addFields(
-        { name: 'Prefix', value: '`!h`' },
-        { name: 'Send help', value: '`!h help`' },
-        { name: 'Kick a member', value: '`!h kick <user_id>` *Yeet a member*' },
-        { name: 'Ban a member', value: '`!h ban <user_id>` ***Yeet a member harder***' },
-        { name: 'Which day of the week is your birthday', value: '`!h day? <MM/DD/YYYY> <# of years from now>` Find out which day of the week is your birthday in x years' },
-        { name: 'Find sum of two numbers', value: '`!h sum <num1> <num2>` ' },
-        { name: 'Gay rate', value: '`!h gay` Find out how gay you are' },
+        { name: 'Prefix', value: '`!!h`' },
+        { name: 'Send help', value: '`!!h help`' },
+        { name: 'Kick a member', value: '`!!h kick <user_id>` *Yeet a member*' },
+        { name: 'Ban a member', value: '`!!h ban <user_id>` ***Yeet a member harder***' },
+        { name: 'Which day of the week is your birthday', value: '`!!h day? <MM/DD/YYYY> <# of years from now>` Find out which day of the week is your birthday in x years' },
+        { name: 'Find sum of two numbers', value: '`!!h sum <num1> <num2>` ' },
+        { name: 'Gay rate', value: '`!!h gay` Find out how gay you are' },
         { name: '\u200B', value: '\u200B' }, // space
     )
     .setTimestamp()
@@ -204,7 +212,7 @@ client.on("messageCreate", async (msg) => {
     // console.log(`[${msg.author.tag}]: ${msg.content} `);
     // if (msg.author.bot) return;
     // msg.channel.send('Message Recieved');
-
+    
     if (msg.content.startsWith(PREFIX)) {
 
         // array destructuring 
@@ -351,6 +359,30 @@ client.on("messageCreate", async (msg) => {
     } else if (msg.content === 'Ur mom') {
         return msg.reply('Ur mom');
     }
+
+    // // check to ensure message was sent by bot and contains embed
+    // // if (!msg.author.bot || !msg.embeds[0]) return;
+    // if (msg.author.bot || msg.embeds[0]) {
+
+    //     const receivedEmbed = msg.embeds[0];
+    //     // const exampleEmbed = new MessageEmbed(receivedEmbed).setTitle('New title');
+
+    //     // send in same channel
+    //     //msg.channel.send(exampleEmbed);
+    //     console.log("Sending example embed..");
+    //     msg.channel.send({ embeds: [exampleEmbed] });
+
+    //     // send in different channel
+    //     // client.channels.fetch(process.env.TEST_CHANNEL).then(channel => {
+    //     //    msg.channel.send(exampleEmbed);
+    //     // });
+    //     // alternatively, you can use this (but the function must be asynchronous)
+    //     // const channel = await client.channels.fetch(process.env.TEST_CHANNEL);
+    //     // msg.channel.send(exampleEmbed);
+
+    //     return
+    // }
+
 }); // end message
 
 client.on('messageReactionAdd', (reaction, user) => {

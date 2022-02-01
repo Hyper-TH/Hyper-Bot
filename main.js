@@ -8,45 +8,6 @@ import DiscordJS, {
 import dotenv from 'dotenv'
 dotenv.config()
 
-// // Regex
-// function getUserFromMention(mention) {
-// 	// The id is the first and only match found by the RegEx.
-// 	const matches = mention.match(USERS_PATTERN);
-
-// 	// If supplied variable was not a mention, matches will be null instead of an array.
-// 	if (!matches) return;
-
-// 	// The first element in the matches array will be the entire mention, not just the ID,
-// 	// so use index 1.
-// 	const id = matches[1];
-
-// 	return client.users.cache.get(id);
-// }
-
-// Get userid from mention (parsing)
-// function getUserFromMention(mention) {
-// 	if (!mention) return;
-
-// 	if (mention.startsWith('<@') && mention.endsWith('>')) {
-// 		mention = mention.slice(2, -1);
-
-// 		if (mention.startsWith('!')) {
-// 			mention = mention.slice(1);
-// 		}
-
-// 		return client.users.cache.get(mention);
-// 	}
-// }
-
-
-// First parameter is id while second is token
-const webhookData = {
-    id: process.env.WEBHOOK_ID,
-    token: process.env.WEBHOOK_TOKEN
-}
-const webhook = new DiscordJS.WebhookClient(webhookData);
-webhook.send('Hyper was here!')
-
 const client = new DiscordJS.Client({ 
     presence: {
         status: 'online',
@@ -63,26 +24,13 @@ const client = new DiscordJS.Client({
     partials: ['MESSAGE', 'REACTION']
 }); 
 
-const PREFIX = "!!h "; // add space
-
-// Embeded example
-const exampleEmbed = new MessageEmbed()
-	.setColor('#0099ff')
-	.setTitle('Some title')
-	.setURL('https://discord.js.org/')
-	.setAuthor({ name: 'Some name', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-	.setDescription('Some description here')
-	.setThumbnail('https://i.imgur.com/AfFp7pu.png')
-	.addFields(
-		{ name: 'Regular field title', value: 'Some value here' },
-		{ name: '\u200B', value: '\u200B' },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
-	)
-	.addField('Inline field title', 'Some value here', true)
-	.setImage('https://i.imgur.com/AfFp7pu.png')
-	.setTimestamp()
-	.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+// First parameter is id while second is token
+const webhookData = {
+    id: process.env.WEBHOOK_ID,
+    token: process.env.WEBHOOK_TOKEN
+}
+const webhook = new DiscordJS.WebhookClient(webhookData);
+webhook.send('Hyper was here!')
 
 // Help embedded
 const hyper_png = new MessageAttachment('assets/hyper.png');
@@ -90,7 +38,7 @@ const helpEmbed = new MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Help commands for Hyper Bot')
     // .setURL('https://discord.js.org/')
-    .setAuthor({ name: 'Hyper Bot', iconURL: 'attachment://hyper.png', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }) // Add hyper logo to sources
+    .setAuthor({ name: 'Hyper Bot', iconURL: 'attachment://hyper.png', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }) 
     .setDescription('A simple but messy bot created by a clueless Computer Science student')
     .setThumbnail('attachment://hyper.png')
     .addFields(
@@ -107,17 +55,7 @@ const helpEmbed = new MessageEmbed()
     .setFooter({ text: 'Ur mom', setImage: 'attachment://hyper.png' });
 
 
-Date.prototype.addDays = function (days) {
-    let date = new Date(this.valueOf());
-    date.setDate(date.getDate() + days);
-    return date;
-};
-
-Date.prototype.addYears = function (years) {
-    let date = new Date(this.valueOf());
-    date.setFullYear(date.getFullYear() + years);
-    return date;
-};
+const PREFIX = "!!h "; // add space
 
 const daysArr = {
     0 : 'Sunday',
@@ -142,7 +80,7 @@ console.log(`Today\'s Date: ${today}`);
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`)
 
-    // test guild 
+    // test guild slash commands
     const testGuildId = process.env.TEST_GUILD 
     const testGuild = client.guilds.cache.get(testGuildId)
     let commands 
@@ -176,7 +114,6 @@ client.on("ready", () => {
             },
         ],
     })
-    // global
 })
 
 client.on('interactionCreate', async (interaction) => {
@@ -199,6 +136,7 @@ client.on('interactionCreate', async (interaction) => {
             ephemeral: true
         })
 
+        // Wait
         await new Promise(resolve => setTimeout(resolve, 5000))
 
         await interaction.editReply({
@@ -210,10 +148,6 @@ client.on('interactionCreate', async (interaction) => {
 
 client.on("messageCreate", async (msg) => {
     
-    // console.log(`[${msg.author.tag}]: ${msg.content} `);
-    // if (msg.author.bot) return;
-    // msg.channel.send('Message Recieved');
-    
     if (msg.content.startsWith(PREFIX)) {
 
         // array destructuring 
@@ -222,11 +156,12 @@ client.on("messageCreate", async (msg) => {
           .substring(PREFIX.length) // return everything after prefix
           .split(/\s+/); // match all whitespaces (regular expression, match all patterns)
 
-        console.log(`Command name used: ${CMD_NAME}`); // For some reason, CMD_NAME becomes an arg
+        console.log(`Command name used: ${CMD_NAME}`); 
         console.log(`Arguments passed : ${args}`);
 
         if (CMD_NAME === 'help') {
             msg.channel.send({ embeds: [helpEmbed], files: [hyper_png] });
+
         } else if (CMD_NAME === 'kick') {
             
             if (!msg.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
@@ -243,17 +178,6 @@ client.on("messageCreate", async (msg) => {
                 console.log(err);
                 msg.channel.send('An error occured. Either I do not have permissions or the user was not found')
             } // end try catch
-
-            // if (member) {
-            //     member
-            //         .kick()
-            //         .then((member) => msg.channel.send(`${member} was kicked.`))
-            //         .catch((err) => msg.channel.send('I do not have permissions to kick that user:('));
-            //     console.log(`${member} was kicked.`)
-            // } else {
-            //     msg.channel.send('Member not found');
-            // }
-        
         // end  kick
 
         } else if (CMD_NAME === 'ban') {
@@ -270,6 +194,7 @@ client.on("messageCreate", async (msg) => {
                 msg.channel.send('An error occured. Either I do not have permissions or the user was not found')
             } // end try catch
         // end ban
+
         } else if (CMD_NAME === 'sum') {
             
             if (args.length === 0) return msg.reply('Please provide the numbers to be added');
@@ -283,8 +208,8 @@ client.on("messageCreate", async (msg) => {
                 console.log(err);
                 msg.channel.send('An error occured, please check console :(');
             }
-
         // end sum
+
         } else if (CMD_NAME === 'day?') {
             
             // Get user date and store into array
@@ -324,7 +249,7 @@ client.on("messageCreate", async (msg) => {
             thisYearMiliseconds = Date.parse(userDateRaw[0] + '-' + userDateRaw[1] +  '-' + today_yyyy); // Get milliseconds of this year
             nextYearMiliseconds = Date.parse(userDateRaw[0] + '-' + userDateRaw[1] +  '-' + (today_yyyy + years)); // Get milliseconds of next year
 
-            // Get the 1 year miliseconds difference
+            // Get the year miliseconds difference
             const miliDifference = nextYearMiliseconds - thisYearMiliseconds 
 
             // Add it to current year
@@ -338,23 +263,20 @@ client.on("messageCreate", async (msg) => {
 
             console.log(output);
             msg.reply(output);   
-
         // end day?
+
         } else if (CMD_NAME === 'gay') {
             let x = Math.floor((Math.random() * 100) + 1);
             console.log(`Random number generated: ${x}`);
 
             if (args.length === 0){
                 return msg.channel.send(`${msg.author.toString()} you are ${x}% gay`)
-            }
-            else { 
-                
-                // let mentioned = getUserFromMention(args[0]);
+            } else { 
                 let mentioned = args[0];
                 return msg.channel.send(`${mentioned} you are ${x}% gay`)
             }
         } 
-    } // end prefix
+    } // end prefix commands
 
     if (msg.content === 'no u') {
         return msg.reply('No u');
@@ -362,6 +284,7 @@ client.on("messageCreate", async (msg) => {
         return msg.reply('Ur mom');
     }
     
+    // Disboard responder
     if (msg.author.id === process.env.DISBOARD_ID) {
     
         if (msg.embeds[0].description.includes("Please wait")) {
@@ -378,6 +301,8 @@ client.on("messageCreate", async (msg) => {
             
             msg.channel.send(`Bumped successfully ${mentioned}`);
             
+        } else if (msg.embeds[0].description.includes("DISBOARD API")) {
+            msg.channel.send(`Bot timed out!`);
         } else {
             msg.channel.send(`I'm not habla, I can only speak english`);
         }

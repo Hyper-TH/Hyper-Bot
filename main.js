@@ -376,7 +376,7 @@ client.on("messageCreate", async (msg) => {
             const embedString = msg.embeds[0].description.split(' ');
             let mentioned = embedString[0];
             
-            msg.channel.send(`Bump successfully ${mentioned}`);
+            msg.channel.send(`Bumped successfully ${mentioned}`);
             
         } else {
             msg.channel.send(`I'm not habla, I can only speak english`);

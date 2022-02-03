@@ -69,6 +69,19 @@ const daysArr = {
     6 : 'Saturday'
 };
 
+// Parse mention
+function getUserFromMention (mention) {
+
+	if (mention.startsWith('<@') && mention.endsWith('>')) {
+		mention = mention.slice(2, -1);
+
+		if (mention.startsWith('!')) {
+			mention = mention.slice(1);
+		}
+
+		return mention;
+	}
+}
 
 // Get today's date
 var today = new Date();
@@ -247,10 +260,10 @@ client.on("messageCreate", async (msg) => {
     } else if (msg.content === 'ur mom') {
         return msg.reply('ur mom');
     }
-    
+
     /* DISBOARD */
     if (msg.author.id === process.env.DISBOARD_ID) {
-    
+        
         if ((msg.embeds).length) {
             
             if (msg.embeds[0].description.includes("Please wait")) {

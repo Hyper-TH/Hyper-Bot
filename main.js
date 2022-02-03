@@ -248,49 +248,6 @@ client.on("messageCreate", async (msg) => {
         return msg.reply('ur mom');
     }
     
-    /* HYPERBOARD */
-    if (msg.author.id === process.env.HYPERBOARD_ID) {
-    
-        if ((msg.embeds).length) {
-            
-            if (msg.embeds[0].description.includes("Please wait")) {
-
-                const embedString = msg.embeds[0].description.split(' ');
-                let mentioned = embedString[0];
-
-                console.log(`Bump unsuccessful for ${mentioned}`);
-                // msg.channel.send(`Bump Unsuccessful ${mentioned}`);
-
-            } else if (msg.embeds[0].description.includes("Bump done!")) {
-
-                const embedString = msg.embeds[0].description.split(' ');
-                let mentioned = getUserFromMention(embedString[0]);
-
-                const randomAmountOfXp = Math.floor(Math.random() * 29) + 1; // Min 1, Max 30
-                const hasLeveledUp = await levels.appendXp(mentioned, msg.guild.id, randomAmountOfXp);
-                
-                msg.reply(`XP given for <@${mentioned}>, server bumped`);
-
-                if (hasLeveledUp) {
-                
-                    const user = await levels.fetch(msg.author.id, msg.guild.id);
-                    
-                    const levelEmbed = new DiscordJS.MessageEmbed()
-                    .setTitle('New Level!')
-                    .setDescription(`**GG** ${msg.author}, you just leveled up to level **${user.level + 1}**!\n🥳`)
-
-                    const sendEmbed = await msg.channel.send(levelEmbed)
-                    sendEmbed.react('🥳')
-                }
-            } else if (msg.embeds[0].description.includes('DISBOARD')) {
-                msg.channel.send(`The bot timed out`);
-            } else {
-                // This is when DISBOARD randomly speaks in a different language
-                msg.channel.send(`I'm not habla, I can only speak english`);
-            }
-        } 
-    }
-
     /* DISBOARD */
     if (msg.author.id === process.env.DISBOARD_ID) {
     

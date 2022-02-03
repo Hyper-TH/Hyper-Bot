@@ -256,8 +256,10 @@ client.on("messageCreate", async (msg) => {
     } // end prefix commands
 
     if (msg.content === 'no u') {
+        if(msg.author.bot) return;
         return msg.reply('no u');
     } else if (msg.content === 'ur mom') {
+        if(msg.author.bot) return;
         return msg.reply('ur mom');
     }
 

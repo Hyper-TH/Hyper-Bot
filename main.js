@@ -50,7 +50,8 @@ const helpEmbed = new MessageEmbed()
         { name: 'Ban a member', value: '`!!h ban <user_id>` ***Yeet a member harder*** (For admins only)' },
         { name: 'Which day of the week is your birthday', value: '`!!h day? <MM/DD/YYYY> <# of years from now>` Find out which day of the week is your birthday in x years' },
         { name: 'Find sum of two numbers', value: '`!!h sum <num1> <num2>` ' },
-        { name: 'Gay rate', value: '`!!h gay` Find out how gay you are' },
+        { name: 'Gay rate', value: '`!!h gay <optional: user>` Find out how gay you are' },
+        { name: 'leaderboard', value: '`!!h leaderboard` Display the top 10 bumpers of this server' },
         { name: '\u200B', value: '\u200B' }, // space
     )
     .setTimestamp()

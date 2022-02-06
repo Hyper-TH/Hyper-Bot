@@ -114,7 +114,6 @@ client.on("messageCreate", async (msg) => {
                 embeds: [helpEmbed], 
                 files: [hyper_png] 
             });
-
         } else if (CMD_NAME === 'kick') {
             
             if (!msg.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
@@ -274,7 +273,6 @@ client.on("messageCreate", async (msg) => {
                 let mentioned = embedString[0];
 
                 console.log(`Bump unsuccessful for ${mentioned}`);
-                // msg.channel.send(`Bump Unsuccessful ${mentioned}`);
 
             } else if (msg.embeds[0].description.includes("Bump done!")) {
 
@@ -298,7 +296,7 @@ client.on("messageCreate", async (msg) => {
                     sendEmbed.react('🥳')
                 }
             } else if (msg.embeds[0].description.includes('DISBOARD')) {
-                msg.channel.send(`The bot timed out`);
+                msg.channel.send(`The bot timed out/Unrecognized response from Disboard`);
             } else {
                 // This is when DISBOARD randomly speaks in a different language
                 msg.channel.send(`I'm not habla, I can only speak english`);
@@ -307,5 +305,5 @@ client.on("messageCreate", async (msg) => {
     }
 }); // end message
 
-// This has to be the last line of the file
+
 client.login(process.env.TOKEN);

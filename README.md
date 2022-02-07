@@ -31,7 +31,7 @@ Display the top 10 Disboard bumpers of the server
 
 Make a copy of `.env.example` and rename the copied file to `.env`. Environment variables go in here.
 
-Edit `.env` with your bot's actual Bot Token and Client ID.
+Edit `.env` with your bot's actual Bot token, Disboard ID, and your MongoDB URL
 
 ##### It is important to note that all tokens and urls from the environment file `.env` and from the source files itself prior to v0.1.0 are now invalid.
 

@@ -6,7 +6,10 @@ import DiscordJS, {
 } from 'discord.js'
 
 import dotenv from 'dotenv'
+import levels from "discord.js-leveling"
+
 dotenv.config()
+levels.setURL(`${process.env.MONGO_URL}`)
 
 const client = new DiscordJS.Client({ 
     presence: {
@@ -23,17 +26,6 @@ const client = new DiscordJS.Client({
     ] , 
     partials: ['MESSAGE', 'REACTION']
 }); 
-
-import mongoose from 'mongoose';
-
-mongoose.connect('mongodb+srv://HyperMaxGB:HyperMax@hyper-bot-cluster.ggiyv.mongodb.net/Data', { 
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-
-import levels from "discord.js-leveling"
-
-levels.setURL("mongodb+srv://HyperMaxGB:HyperMax@hyper-bot-cluster.ggiyv.mongodb.net/Data")
 
 // Help embedded
 const hyper_png = new MessageAttachment('assets/hyper.png');

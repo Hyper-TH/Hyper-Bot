@@ -6,7 +6,10 @@ import DiscordJS, {
 } from 'discord.js'
 
 import dotenv from 'dotenv'
+import levels from "discord.js-leveling"
+
 dotenv.config()
+levels.setURL(`${process.env.MONGO_URL}`)
 
 const client = new DiscordJS.Client({ 
     presence: {
@@ -24,17 +27,6 @@ const client = new DiscordJS.Client({
     partials: ['MESSAGE', 'REACTION']
 }); 
 
-import mongoose from 'mongoose';
-
-mongoose.connect('mongodb+srv://HyperMaxGB:HyperMax@hyper-bot-cluster.ggiyv.mongodb.net/Data', { 
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-
-import levels from "discord.js-leveling"
-
-levels.setURL("mongodb+srv://HyperMaxGB:HyperMax@hyper-bot-cluster.ggiyv.mongodb.net/Data")
-
 // Help embedded
 const hyper_png = new MessageAttachment('assets/hyper.png');
 const helpEmbed = new MessageEmbed()
@@ -50,7 +42,8 @@ const helpEmbed = new MessageEmbed()
         { name: 'Ban a member', value: '`!!h ban <user_id>` ***Yeet a member harder*** (For admins only)' },
         { name: 'Which day of the week is your birthday', value: '`!!h day? <MM/DD/YYYY> <# of years from now>` Find out which day of the week is your birthday in x years' },
         { name: 'Find sum of two numbers', value: '`!!h sum <num1> <num2>` ' },
-        { name: 'Gay rate', value: '`!!h gay` Find out how gay you are' },
+        { name: 'Gay rate', value: '`!!h gay <optional: user>` Find out how gay you are' },
+        { name: 'leaderboard', value: '`!!h leaderboard` Display the top 10 bumpers of this server' },
         { name: '\u200B', value: '\u200B' }, // space
     )
     .setTimestamp()

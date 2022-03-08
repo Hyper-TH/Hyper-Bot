@@ -16,7 +16,7 @@ const client = new DiscordJS.Client({
         status: 'online',
         afk: false,
         activities: [{
-            name: 'with ur mom',
+            name: 'lol discy down',
             type: 'PLAYING'
         }],
     },

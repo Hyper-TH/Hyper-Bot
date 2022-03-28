@@ -234,16 +234,18 @@ client.on("messageCreate", async (msg) => {
             msg.reply(`FBI OPEN UP`)
         } else if (CMD_NAME === 'leaderboard') {
 
-            const rawLeaderboard = await levels.fetchLeaderboard(msg.guild.id, 10); // We grab top 10 users with most xp in the current server.
+            // const rawLeaderboard = await levels.fetchLeaderboard(msg.guild.id, 10); // We grab top 10 users with most xp in the current server.
         
-            if (rawLeaderboard.length < 1) return msg.reply("Nobody's in leaderboard yet.");
+            // if (rawLeaderboard.length < 1) return msg.reply("Nobody's in leaderboard yet.");
     
-            const leaderboard = await levels.computeLeaderboard(client, rawLeaderboard, true); // We process the leaderboard.
+            // const leaderboard = await levels.computeLeaderboard(client, rawLeaderboard, true); // We process the leaderboard.
     
-            // Turn this into a proper embbed (WIP)
-            const lb = leaderboard.map(e => `${e.position}. ${e.username}#${e.discriminator}\nLevel: ${e.level}\nXP: ${e.xp.toLocaleString()}`); // We map the outputs.
+            // // Turn this into a proper embbed (WIP)
+            // const lb = leaderboard.map(e => `${e.position}. ${e.username}#${e.discriminator}\nLevel: ${e.level}\nXP: ${e.xp.toLocaleString()}`); // We map the outputs.
 
             msg.channel.send(`**Leaderboard**:\n\n${lb.join("\n\n")}`);
+
+            msg.channel.send("hidden");
         }
     } // end prefix commands
 

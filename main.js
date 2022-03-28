@@ -243,9 +243,9 @@ client.on("messageCreate", async (msg) => {
             // // Turn this into a proper embbed (WIP)
             // const lb = leaderboard.map(e => `${e.position}. ${e.username}#${e.discriminator}\nLevel: ${e.level}\nXP: ${e.xp.toLocaleString()}`); // We map the outputs.
 
-            msg.channel.send(`**Leaderboard**:\n\n${lb.join("\n\n")}`);
+            // msg.channel.send(`**Leaderboard**:\n\n${lb.join("\n\n")}`);
 
-            msg.channel.send("hidden");
+            msg.channel.send("Leaderboard: hidden");
         }
     } // end prefix commands
 

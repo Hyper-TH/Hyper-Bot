@@ -1,3 +1,6 @@
+## Please note that this is using an older version of DiscordJS(v12?)
+## Leveling up system does not currently work (if it's dependable on disboard bumping) 
+
 # Hyper-Bot
 A simple Discord bot with a Disboard Bump ranking system
 

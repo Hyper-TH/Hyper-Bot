@@ -47,7 +47,7 @@ const helpEmbed = new MessageEmbed()
         { name: '\u200B', value: '\u200B' }, // space
     )
     .setTimestamp()
-    .setFooter({ text: 'Ur mom', setImage: 'attachment://hyper.png' });
+    .setFooter({ text: 'Ur mom', setURL: 'attachment://hyper.png' });
 
 
 const PREFIX = "!!h "; // add space
